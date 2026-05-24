@@ -1,0 +1,45 @@
+# SOC Automation - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# HTTP requests
+requests==2.31.0
+urllib3==2.0.7
+
+# Environment variable management
+python-dotenv==1.0.0
+
+# Data processing
+pandas==2.1.3
+
+# Date/time utilities
+python-dateutil==2.8.2
+
+# Logging (structured)
+structlog==23.2.0
+
+# CLI argument parsing (stdlib, no install needed)
+# argparse - built-in
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+
+# Code quality
+flake8==6.1.0
+black==23.11.0
+
+# Type hints support
+mypy==1.7.1
+
+# JSON schema validation
+jsonschema==4.20.0
+
+# YAML parsing (for Sigma rules)
+PyYAML==6.0.1
+
+# HTML parsing (for web scraping threat intel)
+beautifulsoup4==4.12.2
+
+# Rate limiting
+ratelimit==2.2.1
