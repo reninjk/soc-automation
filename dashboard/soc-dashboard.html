@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOC Operations Dashboard</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #7d8590; --accent: #58a6ff;
+    --critical: #ff4444; --high: #ff8800; --medium: #f0c800;
+    --low: #44cc44; --info: #58a6ff; --green: #3fb950;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+  header h1 { font-size: 18px; font-weight: 600; color: var(--accent); }
+  header .ts { color: var(--muted); font-size: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 24px 24px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .card h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
+  .kpi { font-size: 36px; font-weight: 700; line-height: 1; }
+  .kpi-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .critical { color: var(--critical); }
+  .high { color: var(--high); }
+  .medium { color: var(--medium); }
+  .low { color: var(--low); }
+  .green { color: var(--green); }
+  .accent { color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  td { padding: 8px 8px; border-bottom: 1px solid #21262d; font-size: 13px; }
+  tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-critical { background: rgba(255,68,68,0.15); color: var(--critical); }
+  .badge-high { background: rgba(255,136,0,0.15); color: var(--high); }
+  .badge-medium { background: rgba(240,200,0,0.15); color: var(--medium); }
+  .badge-low { background: rgba(68,204,68,0.15); color: var(--low); }
+  .badge-open { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .badge-resolved { background: rgba(63,185,80,0.15); color: var(--green); }
+  .bar-container { background: #21262d; border-radius: 4px; height: 8px; margin-top: 4px; }
+  .bar { height: 8px; border-radius: 4px; }
+  .metric-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #21262d; }
+  .metric-row:last-child { border-bottom: none; }
+  .metric-label { color: var(--muted); font-size: 12px; }
+  .metric-val { font-weight: 600; }
+  footer { text-align: center; padding: 16px; color: var(--muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 8px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>&#x1F6E1; SOC Operations Dashboard</h1>
+  <span class="ts" id="timestamp">Loading...</span>
+</header>
+
+<div class="grid">
+  <div class="card">
+    <h2>Open Incidents</h2>
+    <div class="kpi critical">7</div>
+    <div class="kpi-sub">3 critical &bull; 4 high</div>
+  </div>
+  <div class="card">
+    <h2>Alerts Today</h2>
+    <div class="kpi accent">142</div>
+    <div class="kpi-sub">+18% vs yesterday</div>
+  </div>
+  <div class="card">
+    <h2>MTTD (avg)</h2>
+    <div class="kpi green">4.2h</div>
+    <div class="kpi-sub">Target: &lt; 8h &mdash; ON TRACK</div>
+  </div>
+  <div class="card">
+    <h2>MTTR (avg)</h2>
+    <div class="kpi medium">18.6h</div>
+    <div class="kpi-sub">Target: &lt; 24h &mdash; ON TRACK</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <h2>Active Incidents</h2>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Title</th><th>Severity</th><th>Status</th><th>Owner</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>INC-0041</td><td>Suspected C2 Beaconing</td><td><span class="badge badge-critical">Critical</span></td><td><span class="badge badge-open">Investigating</span></td><td>Analyst A</td></tr>
+        <tr><td>INC-0040</td><td>Account Lockout — Finance</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-open">Triaging</span></td><td>Analyst B</td></tr>
+        <tr><td>INC-0039</td><td>Phishing Campaign Wave</td><td><span class="badge badge-high">High</span></td><td><span class="badge badge-open">Containment</span></td><td>IR Lead</td></tr>
+        <tr><td>INC-0038</td><td>Lateral Movement Alert</td><td><span class="badge badge-critical">Critical</span></td><td><span class="badge badge-open">Escalated</span></td><td>SOC Manager</td></tr>
+        <tr><td>INC-0037</td><td>Malware on Endpoint</td><td><span class="badge badge-medium">Medium</span></td><td><span class="badge badge-resolved">Resolved</span></td><td>Analyst A</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Vulnerability Snapshot</h2>
+    <div class="metric-row"><span class="metric-label">Critical (0-day SLA breach risk)</span><span class="metric-val critical">3</span></div>
+    <div class="metric-row"><span class="metric-label">High (SLA &lt; 10 days)</span><span class="metric-val high">12</span></div>
+    <div class="metric-row"><span class="metric-label">Medium</span><span class="metric-val medium">47</span></div>
+    <div class="metric-row"><span class="metric-label">Low</span><span class="metric-val low">91</span></div>
+    <div class="metric-row"><span class="metric-label">Scan Coverage</span><span class="metric-val green">98.4%</span></div>
+    <div class="metric-row"><span class="metric-label">SLA Compliance (30-day)</span><span class="metric-val green">96.1%</span></div>
+    <div class="metric-row"><span class="metric-label">Open Exceptions</span><span class="metric-val medium">2</span></div>
+  </div>
+</div>
+
+<div class="grid-2" style="padding-top:0">
+  <div class="card">
+    <h2>Alert Triage Breakdown — Last 7 Days</h2>
+    <div class="metric-row"><span class="metric-label">True Positive</span><span class="metric-val accent">184</span></div>
+    <div style="margin-bottom:8px"><div class="bar-container"><div class="bar" style="width:55%;background:var(--accent)"></div></div></div>
+    <div class="metric-row"><span class="metric-label">False Positive</span><span class="metric-val muted">112</span></div>
+    <div style="margin-bottom:8px"><div class="bar-container"><div class="bar" style="width:33%;background:var(--border)"></div></div></div>
+    <div class="metric-row"><span class="metric-label">Benign / Expected</span><span class="metric-val low">39</span></div>
+    <div style="margin-bottom:8px"><div class="bar-container"><div class="bar" style="width:12%;background:var(--green)"></div></div></div>
+    <div class="metric-row" style="margin-top:12px"><span class="metric-label">False Positive Rate</span><span class="metric-val medium">33%</span></div>
+    <div class="metric-row"><span class="metric-label">Auto-Triaged</span><span class="metric-val green">61%</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Threat Intelligence Feed Status</h2>
+    <table>
+      <thead><tr><th>Feed</th><th>Last Sync</th><th>IOCs</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>CISA KEV</td><td>2h ago</td><td>1,147</td><td><span class="badge badge-resolved">OK</span></td></tr>
+        <tr><td>MISP Community</td><td>4h ago</td><td>8,320</td><td><span class="badge badge-resolved">OK</span></td></tr>
+        <tr><td>Internal IOCs</td><td>1h ago</td><td>243</td><td><span class="badge badge-resolved">OK</span></td></tr>
+        <tr><td>ISAC Feed</td><td>8h ago</td><td>512</td><td><span class="badge badge-medium">Stale</span></td></tr>
+        <tr><td>Custom Watchlist</td><td>30m ago</td><td>89</td><td><span class="badge badge-resolved">OK</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  SOC Operations Dashboard &mdash; reninjk/soc-automation &mdash; Data shown is illustrative (replace with live API feeds in production)
+</footer>
+
+<script>
+  document.getElementById('timestamp').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-GB', {dateStyle:'medium', timeStyle:'short'}) + ' UTC';
+</script>
+</body>
+</html>
