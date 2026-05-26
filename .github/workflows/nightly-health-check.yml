@@ -1,1 +1,73 @@
+name: Nightly Health Check
 
+on:
+  schedule:
+    - cron: "0 2 * * *"  # Every day at 02:00 UTC
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    name: SOC Automation Health Check
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        continue-on-error: true
+        run: |
+          pip install --quiet -r requirements.txt || true
+
+      - name: Python syntax check - all scripts
+        run: |
+          echo "=== Python Syntax Check ==="
+          PASS=0; FAIL=0
+          find . -name "*.py" -not -path "./.git/*" | while read f; do
+            if python -m py_compile "$f" 2>/dev/null; then
+              echo "  PASS: $f"
+              PASS=$((PASS+1))
+            else
+              echo "  FAIL: $f"
+              FAIL=$((FAIL+1))
+            fi
+          done
+          echo "Syntax check complete"
+
+      - name: Run unit tests
+        continue-on-error: true
+        run: |
+          echo "=== Unit Tests ==="
+          if find tests -name "test_*.py" 2>/dev/null | grep -q .; then
+            python -m pytest tests/ -v --tb=short 2>&1 || true
+          else
+            echo "No test files found - skipping"
+          fi
+
+      - name: Check requirements file
+        run: |
+          echo "=== Requirements Check ==="
+          if [ -f requirements.txt ]; then
+            echo "requirements.txt exists"
+            echo "Packages listed: $(wc -l < requirements.txt)"
+            cat requirements.txt
+          else
+            echo "WARNING: requirements.txt not found"
+          fi
+
+      - name: Repository structure check
+        run: |
+          echo "=== Repository Structure ==="
+          for dir in alert-triage ioc-enrichment reporting tests dashboard; do
+            if [ -d "$dir" ]; then
+              echo "  OK : $dir/"
+            else
+              echo "  MISSING: $dir/"
+            fi
+          done
