@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Last Commit](https://img.shields.io/github/last-commit/reninjk/soc-automation)](https://github.com/reninjk/soc-automation/commits/main) [![Issues](https://img.shields.io/github/issues/reninjk/soc-automation)](https://github.com/reninjk/soc-automation/issues) [![CI](https://github.com/reninjk/soc-automation/actions/workflows/ci.yml/badge.svg)](https://github.com/reninjk/soc-automation/actions/workflows/ci.yml) [![CodeQL](https://github.com/reninjk/soc-automation/actions/workflows/codeql.yml/badge.svg)](https://github.com/reninjk/soc-automation/actions/workflows/codeql.yml)
+
 # ⚙️ SOC Automation
 
 > Python and Bash automation scripts for alert triage, IOC enrichment, case management, and incident response workflows.
