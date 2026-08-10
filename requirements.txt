@@ -30,7 +30,7 @@ flake8==6.1.0
 black==23.11.0
 
 # Type hints support
-mypy==1.7.1
+mypy==2.3.0
 
 # JSON schema validation
 jsonschema==4.20.0
