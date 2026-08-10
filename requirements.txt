@@ -39,7 +39,7 @@ jsonschema==4.20.0
 PyYAML==6.0.1
 
 # HTML parsing (for web scraping threat intel)
-beautifulsoup4==4.12.2
+beautifulsoup4==4.15.0
 
 # Rate limiting
 ratelimit==2.2.1
