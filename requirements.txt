@@ -15,7 +15,7 @@ pandas==2.1.3
 python-dateutil==2.8.2
 
 # Logging (structured)
-structlog==23.2.0
+structlog==26.1.0
 
 # CLI argument parsing (stdlib, no install needed)
 # argparse - built-in
