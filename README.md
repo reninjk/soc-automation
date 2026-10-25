@@ -104,9 +104,9 @@ flake8 . --max-line-length=120
 
 ## 🔗 Related Repositories
 
-- [soc-detection-rules](../soc-detection-rules) — Detection rules that trigger these automations
-- [soc-incident-response](../soc-incident-response) — IR playbooks executed by these scripts
-- [soc-compliance-reporting](../soc-compliance-reporting) — Metrics reports generated here
+- [soc-detection-rules](../soc-detection-rules): Detection rules that trigger these automations
+- [soc-incident-response](../soc-incident-response): IR playbooks executed by these scripts
+- [soc-compliance-reporting](../soc-compliance-reporting): Metrics reports generated here
 
 ---
 *Maintained by the SOC Manager | All scripts require peer review before production deployment*
